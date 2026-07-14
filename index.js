@@ -40,6 +40,24 @@ app.get('/users', (req, res)=>{
     res.send(users)
 })
 
+// Get single user
+app.get('/users/:id', (req, res) =>{
+    const id = parseInt(req.params.id);
+    const user = users.filter(u => u.id === id);
+
+    if(!user){
+        return res.status(404).send({
+            success: false,
+            message: "User not found"
+        })
+    }
+
+    res.send({
+        success: true,
+        data: user
+    })
+})
+
 
 // POST user
 app.post('/users', validationMiddle, (req, res, next) => {
@@ -90,7 +108,6 @@ app.put('/users/:id', (req, res, next)=>{
 app.delete('/users/:id', (req, res, next)=>{
     try{
         const id = parseInt(req.params.id);
-
         const user = users.find(u => u.id === id);
 
         if(!user){
